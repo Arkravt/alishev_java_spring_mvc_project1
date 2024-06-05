@@ -15,17 +15,16 @@ public class Person {
     @Min(value = 1, message = "Год рождения должен быть больше 0")
     private int yearBirth;
 
-
+    private List<Book> books;
 
     public Person() {
     }
 
-    public Person(String fullName, int yearBirth, List<Book> bookList) {
+    public Person(String fullName, int yearBirth, List<Book> books) {
         this.fullName = fullName;
         this.yearBirth = yearBirth;
+        this.books = books;
     }
-
-
 
     public int getId() {
         return id;
@@ -51,4 +50,11 @@ public class Person {
         this.yearBirth = yearBirth;
     }
 
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }

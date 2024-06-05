@@ -5,6 +5,7 @@
     <title>Люди</title>
 </head>
 <body>
+
 <div th:each="person : ${people}">
     <a th:href="@{/people/{id} (id=${person.getId()})}"
        th:text="${person.getFullName()} + ', ' +${person.getYearBirth()}">user</a>
@@ -12,5 +13,6 @@
 <br>
 <hr>
 <a th:href="@{/people/new}">Добавить человека</a>
+
 </body>
 </html>

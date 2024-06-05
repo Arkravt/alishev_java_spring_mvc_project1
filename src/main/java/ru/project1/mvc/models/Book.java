@@ -1,18 +1,33 @@
 package ru.project1.mvc.models;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+
 public class Book {
 
     private int id;
+
+    @NotEmpty(message = "Наименование должно быть заполнено")
     private String name;
-    private String Author;
+
+    @NotEmpty(message = "Автор должен быть заполнен")
+    private String author;
+
+    @Min(value = 1, message = "Год должен быть больше 0")
     private int year;
+
+    private Person person;
+
+    public Book() {
+    }
 
     public Book(int id, String name, String author, int year) {
         this.id = id;
         this.name = name;
-        Author = author;
+        this.author = author;
         this.year = year;
     }
+
 
     public int getId() {
         return id;
@@ -31,11 +46,11 @@ public class Book {
     }
 
     public String getAuthor() {
-        return Author;
+        return author;
     }
 
     public void setAuthor(String author) {
-        Author = author;
+        this.author = author;
     }
 
     public int getYear() {
@@ -44,5 +59,13 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }
