@@ -1,6 +1,7 @@
 package ru.project1.mvc.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -24,15 +25,15 @@ public class PersonDao {
         return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
     }
 
-    public Optional<Person> get(String fullName) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE fullName=?",
-                new Object[]{fullName}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
+    public Optional<Person> get(int id, String fullName) {
+        return jdbcTemplate.query("SELECT * FROM Person WHERE fullName=? AND id<>?",
+                new Object[]{fullName, id}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
 
     }
 
     public Person get(int id) {
         return jdbcTemplate.query("SELECT * FROM Person WHERE id=?",
-                new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
+                        new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
                 .stream().findAny().orElse(null);
     }
 
@@ -49,6 +50,15 @@ public class PersonDao {
     public List<Book> getPersonsBooks(int personId) {
         return jdbcTemplate.query("SELECT * FROM Book WHERE person_id=?",
                 new Object[]{personId}, new BeanPropertyRowMapper<>(Book.class));
+    }
+
+    public Optional<Person> gePersonByBookId(int id) {
+        return jdbcTemplate.query("SELECT Person.id, Person.fullName, Person.yearBirth FROM Person JOIN Book ON Person.id = Book.person_id WHERE book.id=?",
+                new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
+    }
+
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
     }
 
 }

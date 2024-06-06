@@ -15,8 +15,8 @@ import ru.project1.mvc.utils.PersonValidator;
 @RequestMapping("/people")
 public class PersonController {
 
-    private PersonDao personDao;
-    private PersonValidator personValidator;
+    private final PersonDao personDao;
+    private final PersonValidator personValidator;
 
     @Autowired
     public PersonController(PersonDao personDao, PersonValidator personValidator) {
@@ -66,7 +66,6 @@ public class PersonController {
         }
 
         personDao.update(person, id);
-//        return "redirect:/people/{" + id + "}";
         return "redirect:/people";
     }
 
@@ -74,10 +73,16 @@ public class PersonController {
     public String show(@PathVariable("id") int id, Model model) {
 
         Person person = personDao.get(id);
+        person.setBooks(personDao.getPersonsBooks(id));
+        model.addAttribute("person", person);
 
-        model.addAttribute("person", personDao.get(id));
-        model.addAttribute("books", personDao.getPersonsBooks(id));
         return "people/show";
     }
 
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
+
+        personDao.delete(id);
+        return "redirect:/people";
+    }
 }

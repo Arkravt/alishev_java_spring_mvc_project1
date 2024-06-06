@@ -10,6 +10,8 @@ import ru.project1.mvc.dao.PersonDao;
 import ru.project1.mvc.models.Book;
 import ru.project1.mvc.models.Person;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -45,17 +47,24 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id,
-                       @ModelAttribute("person") Person person,
-                       Model model) {
+    public String show(@PathVariable("id") int id, Model model) {
+
         model.addAttribute("book", bookDao.get(id));
         model.addAttribute("people", personDao.index());
+
+        Optional<Person> person = personDao.gePersonByBookId(id);
+
+        if (person.isPresent()) {
+            model.addAttribute(person.get());
+        } else {
+            model.addAttribute(new Person());
+        }
+
         return "book/show";
     }
 
     @PatchMapping("{id}/assign")
-    public String assign(@PathVariable("id") int id,
-                         @ModelAttribute("person") Person person) {
+    public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
         bookDao.assign(id, person.getId());
         return "redirect:/books/{id}";
     }
@@ -73,9 +82,20 @@ public class BookController {
     }
 
     @PatchMapping("{id}")
-    public String update(@PathVariable("id") int id, @ModelAttribute("book") Book book, BindingResult bindingResult) {
+    public String update(@PathVariable("id") int id, @ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "book/edit";
+        }
+
         bookDao.update(book, id);
         return "redirect:/books/{id}";
+    }
+
+    @DeleteMapping("{id}")
+    public String delete(@PathVariable("id") int id) {
+        bookDao.delete(id);
+        return "redirect:/books";
     }
 
 }

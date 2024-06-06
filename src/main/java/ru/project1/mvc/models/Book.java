@@ -16,7 +16,7 @@ public class Book {
     @Min(value = 1, message = "Год должен быть больше 0")
     private int year;
 
-    private Person person;
+//    private Person person;
 
     public Book() {
     }
@@ -61,11 +61,11 @@ public class Book {
         this.year = year;
     }
 
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+//    public Person getPerson() {
+//        return person;
+//    }
+//
+//    public void setPerson(Person person) {
+//        this.person = person;
+//    }
 }

@@ -20,7 +20,7 @@ public class BookMapper implements RowMapper<Book> {
             person.setId(rs.getInt("person_id"));
             person.setFullName(rs.getString("fullName"));
             person.setYearBirth(rs.getInt("yearbirth"));
-            book.setPerson(person);
+            //book.setPerson(person);
         }
 
         return book;

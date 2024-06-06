@@ -28,9 +28,14 @@ public class BookDao {
                 book.getName(), book.getAuthor(), book.getYear());
     }
 
+//    public Book get(int id) {
+//        return jdbcTemplate.query("SELECT book.id, book.name, book.author, book.year, book.person_id, person.fullname, person.yearbirth FROM book LEFT JOIN person ON book.person_id = person.id WHERE book.id = ?",
+//                new Object[]{id}, new BookMapper()).stream().findAny().orElse(null);
+//    }
+
     public Book get(int id) {
-        return jdbcTemplate.query("SELECT book.id, book.name, book.author, book.year, book.person_id, person.fullname, person.yearbirth FROM book LEFT JOIN person ON book.person_id = person.id WHERE book.id = ?",
-                new Object[]{id}, new BookMapper()).stream().findAny().orElse(null);
+        return jdbcTemplate.query("SELECT * FROM book WHERE id=?",
+                new Object[]{id}, new BeanPropertyRowMapper<>(Book.class)).stream().findAny().orElse(null);
     }
 
     public void assign(int id, int personId) {
@@ -44,6 +49,10 @@ public class BookDao {
     public void update(Book book, int id) {
         jdbcTemplate.update("UPDATE Book SET name=?, author=?, year=? WHERE id=?",
                 book.getName(), book.getAuthor(), book.getYear(), id);
+    }
+
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM Book WHERE id=?", id);
     }
 
 }

@@ -8,10 +8,10 @@
 
 <p th:text="${book.getName()} + ', ' + ${book.getAuthor()}  + ', ' + ${book.getYear()}"></p>
 
-<form th:unless="${book.getPerson()}"
+<form th:unless="${person.getId()}"
       th:method="PATCH"
       th:action="@{/books/{id}/assign (id=${book.getId()})}"
-      th:object="${book}">
+      th:object="${person}">
     Эта книга свободна. Кому назначить её ?<br>
     Выберите человека
     <select th:object="${person}" th:field="*{id}" id="person">
@@ -21,15 +21,14 @@
     <input type="submit" value="Назначить книгу">
 </form>
 
-<form th:if="${book.getPerson()}"
+<form th:if="${person.getId()}"
       th:method="PATCH"
       th:action="@{/books/{id}/free (id=${book.getId()})}"
-      th:object="${book}">
-    Книга сейчас у: <span th:text="${book.getPerson().getFullName()}"></span>
+      th:object="${person}">
+    Книга сейчас у: <span th:text="${person.getFullName()}"></span>
     <br>
     <input type="submit" value="Освободить книгу">
 </form>
-
 <hr>
 
 <form th:method="GET"
@@ -38,8 +37,9 @@
     <input type="submit" value="Редактировать">
 </form>
 <br>
+
 <form th:method="DELETE"
-      th:action="@{/books/{id}/delete (id=${book.getId()})}"
+      th:action="@{/books/{id} (id=${book.getId()})}"
       th:object="${book}">
     <input type="submit" value="Удалить">
 </form>
