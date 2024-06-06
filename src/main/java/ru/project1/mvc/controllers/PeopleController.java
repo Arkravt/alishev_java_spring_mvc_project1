@@ -6,23 +6,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.project1.mvc.dao.BookDao;
 import ru.project1.mvc.dao.PersonDao;
 import ru.project1.mvc.models.Person;
 import ru.project1.mvc.utils.PersonValidator;
 
 @Controller
 @RequestMapping("/people")
-public class PersonController {
+public class PeopleController {
 
     private final PersonDao personDao;
     private final PersonValidator personValidator;
 
     @Autowired
-    public PersonController(PersonDao personDao, PersonValidator personValidator) {
+    public PeopleController(PersonDao personDao, PersonValidator personValidator) {
         this.personDao = personDao;
         this.personValidator = personValidator;
     }
+
 
     @GetMapping()
     public String people(Model model) {
@@ -58,7 +58,6 @@ public class PersonController {
                          @ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult
     ) {
-
         personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -71,10 +70,8 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-
-        Person person = personDao.get(id);
-        person.setBooks(personDao.getPersonsBooks(id));
-        model.addAttribute("person", person);
+        model.addAttribute("person", personDao.get(id));
+        model.addAttribute("books", personDao.getBooksByPersonId(id));
 
         return "people/show";
     }

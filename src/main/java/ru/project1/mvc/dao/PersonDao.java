@@ -47,14 +47,9 @@ public class PersonDao {
                 person.getFullName(), person.getYearBirth(), id);
     }
 
-    public List<Book> getPersonsBooks(int personId) {
+    public List<Book> getBooksByPersonId(int personId) {
         return jdbcTemplate.query("SELECT * FROM Book WHERE person_id=?",
                 new Object[]{personId}, new BeanPropertyRowMapper<>(Book.class));
-    }
-
-    public Optional<Person> gePersonByBookId(int id) {
-        return jdbcTemplate.query("SELECT Person.id, Person.fullName, Person.yearBirth FROM Person JOIN Book ON Person.id = Book.person_id WHERE book.id=?",
-                new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
 
     public void delete(int id) {

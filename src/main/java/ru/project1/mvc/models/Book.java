@@ -13,10 +13,8 @@ public class Book {
     @NotEmpty(message = "Автор должен быть заполнен")
     private String author;
 
-    @Min(value = 1, message = "Год должен быть больше 0")
+    @Min(value = 1500, message = "Год должен быть больше 1500")
     private int year;
-
-//    private Person person;
 
     public Book() {
     }
@@ -61,11 +59,4 @@ public class Book {
         this.year = year;
     }
 
-//    public Person getPerson() {
-//        return person;
-//    }
-//
-//    public void setPerson(Person person) {
-//        this.person = person;
-//    }
 }
